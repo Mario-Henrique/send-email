@@ -10,20 +10,22 @@ export default function sendEmail(req, res){
         }
     })
 
+    let {user, to, from, subject, msg} = req.body
+
     transporter.sendMail({
-        from: `"${req.body.user}" <${process.env.USERMAIL}>`,
-        to: process.env.USERMAIL,
-        replyTo: req.body.from,
-        subject: req.body.subject,
-        text: req.body.msg,
-        html: req.body.msg
+        from: `"${user}" <${process.env.USERMAIL}>`,
+        to: to,
+        replyTo: from,
+        subject: subject,
+        text: msg,
+        html: msg
     }).then(
-        (res) => {
-            res.send(res)
+        (result) => {
+            res.send({"msg": "E-mail send success"})
         }
     ).catch(
         (error) => {
-            res.send(error)
+            res.send({"msg": `E-mail send fail. \nError: ${error}`})
         }
     )
 }
